@@ -100,10 +100,15 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    props: ['place']
+    props: ['place'],
+    methods: {
+        directions: function directions(event) {
+            console.log(undefined.place.name);
+        }
+    }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li>{{place.name}}</li>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li v-on:click=\"directions\">{{place.name}} -- {{place.location}}</li>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -118,7 +123,44 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4c8cfe64", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":5,"vue-hot-reload-api":4,"vueify/lib/insert-css":6}],3:[function(require,module,exports){
+},{"vue":6,"vue-hot-reload-api":5,"vueify/lib/insert-css":7}],3:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\nbody{\n\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _costanzaPlace = require('./costanza-place.vue');
+
+var _costanzaPlace2 = _interopRequireDefault(_costanzaPlace);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: ['places'],
+    components: {
+        'costanza-place': _costanzaPlace2.default
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<ul>\n    <costanza-place v-for=\"place in places\" :place=\"place\"></costanza-place>\n</ul>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\nbody{\n\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-61223a15", module.exports)
+  } else {
+    hotAPI.update("_v-61223a15", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"./costanza-place.vue":2,"vue":6,"vue-hot-reload-api":5,"vueify/lib/insert-css":7}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -169,7 +211,7 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     return d / 1000;
 }
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -470,7 +512,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function (process,global){
 'use strict';
 
@@ -5204,7 +5246,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":1}],6:[function(require,module,exports){
+},{"_process":1}],7:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -5224,49 +5266,12 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],7:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\nbody{\n\n}\n")
+},{}],8:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+var _costanzaPlaces = require('./costanza-places.vue');
 
-var _costanzaPlace = require('./costanza-place.vue');
-
-var _costanzaPlace2 = _interopRequireDefault(_costanzaPlace);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-    props: ['places'],
-    components: {
-        'costanza-place': _costanzaPlace2.default
-    }
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<ul>\n    <costanza-place v-for=\"place in places\" :place=\"place\"></costanza-place>\n</ul>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\nbody{\n\n}\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-be41955a", module.exports)
-  } else {
-    hotAPI.update("_v-be41955a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"./costanza-place.vue":2,"vue":5,"vue-hot-reload-api":4,"vueify/lib/insert-css":6}],8:[function(require,module,exports){
-'use strict';
-
-var _placeComp = require('./placeComp.vue');
-
-var _placeComp2 = _interopRequireDefault(_placeComp);
+var _costanzaPlaces2 = _interopRequireDefault(_costanzaPlaces);
 
 var _geoLoc = require('./geoLoc.js');
 
@@ -5285,10 +5290,10 @@ fetch('public_washrooms.csv').then(function (parsed) {
                 return { places: filteredPlaces };
             },
             components: {
-                'costanza-places': _placeComp2.default
+                'costanza-places': _costanzaPlaces2.default
             }
         });
     });
 });
 
-},{"./geoLoc.js":3,"./placeComp.vue":7}]},{},[8]);
+},{"./costanza-places.vue":3,"./geoLoc.js":4}]},{},[8]);
