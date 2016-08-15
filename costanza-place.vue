@@ -1,5 +1,7 @@
 <template>
-    <li v-on:click='directions'>{{place.name}} -- {{place.location}}</li>
+    <li v-on:click='directions'>
+        {{place.name}} -- {{place.location}}
+    </li>
 </template>
 <style>
     body{
@@ -7,11 +9,12 @@
     }
 </style>
 <script>
+    import bus from './events.js';
     export default{
         props: ['place'],
         methods: {
-            directions: (event) => {
-               console.log(this.place.name);
+            directions: function(event) {
+                bus.$emit('placeSelected', this.place);
             }
         }
     }

@@ -1,4 +1,5 @@
 import CostanzaPlaces from './costanza-places.vue';
+import CostanzaStreetView from './costanza-street-view.vue';
 import {geoLoc, filterPlaces} from './geoLoc.js';
 
 
@@ -14,7 +15,8 @@ fetch('public_washrooms.csv')
                     el: '#app',
                     data: function(){ return {places: filteredPlaces}},
                     components: {
-                        'costanza-places': CostanzaPlaces
+                        'costanza-places': CostanzaPlaces,
+                        'costanza-street-view': CostanzaStreetView
                     }
                 })
             });
