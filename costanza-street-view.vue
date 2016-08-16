@@ -5,9 +5,8 @@
 
 <style>
     .sv{
-        width: 500px;
+        width: 100%;
         height: 500px;
-        float: right;
     }
 </style>
 

@@ -14,7 +14,7 @@ fetch('public_washrooms.csv')
                 filteredPlaces =  filterPlaces(places, currentLoc, {accuracy: 0.9});
                 new Vue({
                     el: '#app',
-                    data: function(){ return {places: filteredPlaces}},
+                    data: function(){ return {places: filteredPlaces.slice(0,5)}},
                     components: {
                         'costanza-places': CostanzaPlaces,
                         'costanza-street-view': CostanzaStreetView,

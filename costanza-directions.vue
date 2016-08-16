@@ -1,19 +1,20 @@
 <template>
-    <div>
-        <span>I am direction for {{place.name}}</span>
-        <ol>
-            <li v-for="direction in directions" :direction="direction">
-                 <span v-html="direction.instructions"></span>
-                 <span v-html="direction.duration"></span>
-                 <span v-html="direction.distance"></span>
-            </li>
-        </ol>
-    </div>
+    <ol>
+        <li v-for="direction in directions" :direction="direction">
+             <span v-html="direction.instructions"></span>
+             <span v-html="direction.duration"></span>
+             <span v-html="direction.distance"></span>
+        </li>
+    </ol>
 </template>
 
 
 <style>
-
+    ol{
+        display: inline-flex;
+        flex-direction: column;
+        font-family: monospace;
+    }
 </style>
 
 

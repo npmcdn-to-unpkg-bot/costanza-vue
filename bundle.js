@@ -93,7 +93,7 @@ process.umask = function() { return 0; };
 
 },{}],2:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\nol{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    font-family: monospace;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -140,13 +140,13 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <span>I am direction for {{place.name}}</span>\n    <ol>\n        <li v-for=\"direction in directions\" :direction=\"direction\">\n             <span v-html=\"direction.instructions\"></span>\n             <span v-html=\"direction.duration\"></span>\n             <span v-html=\"direction.distance\"></span>\n        </li>\n    </ol>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<ol>\n    <li v-for=\"direction in directions\" :direction=\"direction\">\n         <span v-html=\"direction.instructions\"></span>\n         <span v-html=\"direction.duration\"></span>\n         <span v-html=\"direction.distance\"></span>\n    </li>\n</ol>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n"] = false
+    __vueify_insert__.cache["\nol{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    font-family: monospace;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -196,7 +196,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"./events.js":6,"vue":9,"vue-hot-reload-api":8,"vueify/lib/insert-css":10}],4:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\nul{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    font-family: monospace;\n}\n\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -222,7 +222,7 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n"] = false
+    __vueify_insert__.cache["\nul{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    font-family: monospace;\n}\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -233,7 +233,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"./costanza-place.vue":3,"vue":9,"vue-hot-reload-api":8,"vueify/lib/insert-css":10}],5:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.sv{\n    width: 500px;\n    height: 500px;\n    float: right;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.sv{\n    width: 100%;\n    height: 500px;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -279,7 +279,7 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.sv{\n    width: 500px;\n    height: 500px;\n    float: right;\n}\n"] = false
+    __vueify_insert__.cache["\n.sv{\n    width: 100%;\n    height: 500px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -5443,7 +5443,7 @@ fetch('public_washrooms.csv').then(function (parsed) {
         new Vue({
             el: '#app',
             data: function data() {
-                return { places: filteredPlaces };
+                return { places: filteredPlaces.slice(0, 5) };
             },
             components: {
                 'costanza-places': _costanzaPlaces2.default,
