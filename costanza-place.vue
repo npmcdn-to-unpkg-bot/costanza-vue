@@ -1,19 +1,21 @@
 <template>
-    <li v-on:click='directions'>
+    <li v-on:click='selectPlace'>
         {{place.name}} -- {{place.location}}
     </li>
 </template>
-<style>
-    body{
 
-    }
+
+<style>
+
 </style>
+
+
 <script>
     import bus from './events.js';
     export default{
         props: ['place'],
         methods: {
-            directions: function(event) {
+            selectPlace: function(event) {
                 bus.$emit('placeSelected', this.place);
             }
         }

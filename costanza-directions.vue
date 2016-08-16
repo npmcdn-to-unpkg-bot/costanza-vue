@@ -2,19 +2,25 @@
     <div>
         <span>I am direction for {{place.name}}</span>
         <ol>
-            <li v-for="direction in directions" :direction="direction" v-html="direction.instructions">
+            <li v-for="direction in directions" :direction="direction">
+                 <span v-html="direction.instructions"></span>
+                 <span v-html="direction.duration"></span>
+                 <span v-html="direction.distance"></span>
             </li>
         </ol>
     </div>
 </template>
+
+
 <style>
-    ul{
-    }
+
 </style>
+
+
 <script>
-//    import costanzaDirection from './costanza-direction.vue';
     import bus from './events.js';
     import {geoLoc} from './geoLoc.js';
+
     export default{
         mounted: function(){
             this.directionsService = new google.maps.DirectionsService();
@@ -44,8 +50,5 @@
                 }.bind(this));
             }
         }
-//        components: {
-//            'costanza-direction': costanzaDirection
-//        }
     }
 </script>

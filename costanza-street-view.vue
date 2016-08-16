@@ -1,6 +1,8 @@
 <template>
     <div class="sv"></div>
 </template>
+
+
 <style>
     .sv{
         width: 500px;
@@ -8,6 +10,8 @@
         float: right;
     }
 </style>
+
+
 <script>
     import bus from './events.js';
     export default{
