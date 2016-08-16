@@ -1,8 +1,12 @@
 export function geoLoc(){
     return new Promise(function(resolve, reject){
-        if ("geolocation" in navigator) {
+
+        if(geoLoc.prototype.cachedLocation) {
+            return resolve(geoLoc.prototype.cachedLocation);
+        } else if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function (data) {
                 if (data) {
+                    geoLoc.prototype.cachedLocation = data.coords;
                     return resolve(data.coords);
                 } else {
                     return reject(new Error("current location not found"));

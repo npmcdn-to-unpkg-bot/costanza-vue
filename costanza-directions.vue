@@ -1,19 +1,51 @@
 <template>
-    <ul>
-        <costanza-direction v-for="direction in directions" :direction="direction"></costanza-direction>
-    </ul>
+    <div>
+        <span>I am direction for {{place.name}}</span>
+        <ol>
+            <li v-for="direction in directions" :direction="direction" v-html="direction.instructions">
+            </li>
+        </ol>
+    </div>
 </template>
 <style>
-    body{
-
+    ul{
     }
 </style>
 <script>
-    import costanzaDirection from './costanza-direction.vue';
+//    import costanzaDirection from './costanza-direction.vue';
+    import bus from './events.js';
+    import {geoLoc} from './geoLoc.js';
     export default{
-        props: ['direction'],
-        components: {
-            'costanza-direction': costanzaDirection
+        mounted: function(){
+            this.directionsService = new google.maps.DirectionsService();
+            this.currentLocation = geoLoc.prototype.cachedLocation;
+            bus.$on('placeSelected', this.render);
+        },
+        data: function(){ return {place: 'select place', directions: []}},
+        methods: {
+            render: function(place){
+                this.place = place;
+
+                this.directionsService.route({
+                    origin: new google.maps.LatLng({lat: this.currentLocation.latitude, lng: this.currentLocation
+                            .longitude}),
+                    destination: new google.maps.LatLng({lat: +place.latitude, lng: +place.longitude}),
+                    travelMode: google.maps.TravelMode.WALKING
+                }, function(result, status){
+                    if(status === 'OK') {
+                        this.directions = [];
+                        result.routes[0].legs[0].steps.forEach(function(step) {
+                            this.directions.push({ instructions: step.instructions, duration: step.duration.text,
+                                distance: step.distance.text});
+                        }.bind(this));
+                    } else {
+                       new Error("something went wrong")
+                    }
+                }.bind(this));
+            }
         }
+//        components: {
+//            'costanza-direction': costanzaDirection
+//        }
     }
 </script>

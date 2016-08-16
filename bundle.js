@@ -93,6 +93,74 @@ process.umask = function() { return 0; };
 
 },{}],2:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\nul{\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _events = require('./events.js');
+
+var _events2 = _interopRequireDefault(_events);
+
+var _geoLoc = require('./geoLoc.js');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//    import costanzaDirection from './costanza-direction.vue';
+exports.default = {
+    mounted: function mounted() {
+        this.directionsService = new google.maps.DirectionsService();
+        this.currentLocation = _geoLoc.geoLoc.prototype.cachedLocation;
+        _events2.default.$on('placeSelected', this.render);
+    },
+    data: function data() {
+        return { place: 'select place', directions: [] };
+    },
+    methods: {
+        render: function render(place) {
+            this.place = place;
+
+            this.directionsService.route({
+                origin: new google.maps.LatLng({ lat: this.currentLocation.latitude, lng: this.currentLocation.longitude }),
+                destination: new google.maps.LatLng({ lat: +place.latitude, lng: +place.longitude }),
+                travelMode: google.maps.TravelMode.WALKING
+            }, function (result, status) {
+                if (status === 'OK') {
+                    this.directions = [];
+                    result.routes[0].legs[0].steps.forEach(function (step) {
+                        this.directions.push({ instructions: step.instructions, duration: step.duration.text,
+                            distance: step.distance.text });
+                    }.bind(this));
+                } else {
+                    new Error("something went wrong");
+                }
+            }.bind(this));
+        }
+    }
+    //        components: {
+    //            'costanza-direction': costanzaDirection
+    //        }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <span>I am direction for {{place.name}}</span>\n    <ol>\n        <li v-for=\"direction in directions\" :direction=\"direction\" v-html=\"direction.instructions\">\n        </li>\n    </ol>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\nul{\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-c70d53c6", module.exports)
+  } else {
+    hotAPI.update("_v-c70d53c6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"./events.js":6,"./geoLoc.js":7,"vue":9,"vue-hot-reload-api":8,"vueify/lib/insert-css":10}],3:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\nbody{\n\n}\n")
 'use strict';
 
@@ -130,7 +198,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4c8cfe64", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./events.js":5,"vue":8,"vue-hot-reload-api":7,"vueify/lib/insert-css":9}],3:[function(require,module,exports){
+},{"./events.js":6,"vue":9,"vue-hot-reload-api":8,"vueify/lib/insert-css":10}],4:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\nbody{\n\n}\n")
 'use strict';
@@ -167,7 +235,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-61223a15", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./costanza-place.vue":2,"vue":8,"vue-hot-reload-api":7,"vueify/lib/insert-css":9}],4:[function(require,module,exports){
+},{"./costanza-place.vue":3,"vue":9,"vue-hot-reload-api":8,"vueify/lib/insert-css":10}],5:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.sv{\n    width: 500px;\n    height: 500px;\n    float: right;\n}\n")
 'use strict';
@@ -224,7 +292,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-0f7ceab6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./events.js":5,"vue":8,"vue-hot-reload-api":7,"vueify/lib/insert-css":9}],5:[function(require,module,exports){
+},{"./events.js":6,"vue":9,"vue-hot-reload-api":8,"vueify/lib/insert-css":10}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -240,7 +308,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var bus = new _vue2.default();
 exports.default = bus;
 
-},{"vue":8}],6:[function(require,module,exports){
+},{"vue":9}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -251,9 +319,13 @@ exports.filterPlaces = filterPlaces;
 exports.getDistanceFromLatLonInKm = getDistanceFromLatLonInKm;
 function geoLoc() {
     return new Promise(function (resolve, reject) {
-        if ("geolocation" in navigator) {
+
+        if (geoLoc.prototype.cachedLocation) {
+            return resolve(geoLoc.prototype.cachedLocation);
+        } else if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function (data) {
                 if (data) {
+                    geoLoc.prototype.cachedLocation = data.coords;
                     return resolve(data.coords);
                 } else {
                     return reject(new Error("current location not found"));
@@ -291,7 +363,7 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     return d / 1000;
 }
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -592,7 +664,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (process,global){
 'use strict';
 
@@ -5326,7 +5398,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":1}],9:[function(require,module,exports){
+},{"_process":1}],10:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -5346,7 +5418,7 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var _costanzaPlaces = require('./costanza-places.vue');
@@ -5356,6 +5428,10 @@ var _costanzaPlaces2 = _interopRequireDefault(_costanzaPlaces);
 var _costanzaStreetView = require('./costanza-street-view.vue');
 
 var _costanzaStreetView2 = _interopRequireDefault(_costanzaStreetView);
+
+var _costanzaDirections = require('./costanza-directions.vue');
+
+var _costanzaDirections2 = _interopRequireDefault(_costanzaDirections);
 
 var _geoLoc = require('./geoLoc.js');
 
@@ -5375,10 +5451,11 @@ fetch('public_washrooms.csv').then(function (parsed) {
             },
             components: {
                 'costanza-places': _costanzaPlaces2.default,
-                'costanza-street-view': _costanzaStreetView2.default
+                'costanza-street-view': _costanzaStreetView2.default,
+                'costanza-directions': _costanzaDirections2.default
             }
         });
     });
 });
 
-},{"./costanza-places.vue":3,"./costanza-street-view.vue":4,"./geoLoc.js":6}]},{},[10]);
+},{"./costanza-directions.vue":2,"./costanza-places.vue":4,"./costanza-street-view.vue":5,"./geoLoc.js":7}]},{},[11]);
