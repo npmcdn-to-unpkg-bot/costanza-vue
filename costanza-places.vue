@@ -9,7 +9,6 @@
     ul{
         display: inline-flex;
         flex-direction: column;
-        font-family: monospace;
     }
 
 </style>
@@ -18,7 +17,7 @@
 <script>
     import costanzaPlace from './costanza-place.vue';
 
-    export default{
+    export default {
         props: ['places'],
         components: {
             'costanza-place': costanzaPlace

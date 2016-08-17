@@ -2,11 +2,32 @@
 <html>
 <head>
   <title>Welcome to Vue</title>
+  <style>
+    body {
+      font-family: monospace;
+    }
+
+    @keyframes blink {
+      0% { opacity: 0 }
+      50% { opacity: 1 }
+      100% { opacity: 0 }
+    }
+
+    .welcome-message {
+      animation-name: blink;
+      animation-iteration-count: infinite;
+      animation-duration: 2s;
+    }
+    .hide {
+      display: none;
+    }
+  </style>
   <script src="https://npmcdn.com/vue@next/dist/vue.js"></script>
   <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
 </head>
 <body>
   <div id="app">
+    <div class="welcome-message hide">Getting list of places</div>
     <costanza-places :places="places"></costanza-places>
     <costanza-directions></costanza-directions>
     <costanza-street-view></costanza-street-view>

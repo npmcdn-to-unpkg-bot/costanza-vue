@@ -93,7 +93,7 @@ process.umask = function() { return 0; };
 
 },{}],2:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\nol{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    font-family: monospace;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\nol{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -146,7 +146,7 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\nol{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    font-family: monospace;\n}\n"] = false
+    __vueify_insert__.cache["\nol{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -157,7 +157,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"./events.js":6,"./geoLoc.js":7,"vue":9,"vue-hot-reload-api":8,"vueify/lib/insert-css":10}],3:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.constanza-place {\n    cursor: pointer;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -179,13 +179,13 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li v-on:click=\"selectPlace\">\n    {{place.name}} -- {{place.location}}\n</li>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li class=\"constanza-place\" v-on:click=\"selectPlace\">\n    {{place.name}} -- {{place.location}}\n</li>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n"] = false
+    __vueify_insert__.cache["\n.constanza-place {\n    cursor: pointer;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -196,7 +196,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"./events.js":6,"vue":9,"vue-hot-reload-api":8,"vueify/lib/insert-css":10}],4:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\nul{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    font-family: monospace;\n}\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\nul{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -222,7 +222,7 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\nul{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    font-family: monospace;\n}\n\n"] = false
+    __vueify_insert__.cache["\nul{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -5433,6 +5433,8 @@ var _geoLoc = require('./geoLoc.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+document.querySelector('.welcome-message').classList.remove('hide');
+
 fetch('public_washrooms.csv').then(function (parsed) {
     return parsed.text();
 }).then(function (data) {
@@ -5440,6 +5442,7 @@ fetch('public_washrooms.csv').then(function (parsed) {
         filteredPlaces = void 0;
     (0, _geoLoc.geoLoc)().then(function (currentLoc) {
         filteredPlaces = (0, _geoLoc.filterPlaces)(places, currentLoc, { accuracy: 0.9 });
+        document.querySelector('.welcome-message').classList.add('hide');
         new Vue({
             el: '#app',
             data: function data() {

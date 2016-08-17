@@ -13,7 +13,6 @@
     ol{
         display: inline-flex;
         flex-direction: column;
-        font-family: monospace;
     }
 </style>
 

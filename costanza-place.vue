@@ -1,12 +1,14 @@
 <template>
-    <li v-on:click='selectPlace'>
+    <li class="constanza-place" v-on:click='selectPlace'>
         {{place.name}} -- {{place.location}}
     </li>
 </template>
 
 
 <style>
-
+    .constanza-place {
+        cursor: pointer;
+    }
 </style>
 
 
