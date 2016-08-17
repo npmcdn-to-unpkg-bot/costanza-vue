@@ -13,7 +13,7 @@
 
 
 <script>
-    import bus from './events.js';
+    import bus from '../helpers/events.js';
     export default{
         props: ['place'],
         methods: {

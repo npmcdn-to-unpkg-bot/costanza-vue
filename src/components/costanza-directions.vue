@@ -18,8 +18,8 @@
 
 
 <script>
-    import bus from './events.js';
-    import {geoLoc} from './geoLoc.js';
+    import bus from '../helpers/events.js';
+    import {geoLoc} from '../helpers/geoLoc.js';
 
     export default{
         mounted: function(){

@@ -12,12 +12,12 @@
 
 
 <script>
-    import bus from './events.js';
+    import bus from '../helpers/events.js';
     export default{
-        data: function(){
+        data(){
             return {place: 'select a place pls'}
         },
-        mounted: function(){
+        mounted(){
             this.elem = document.querySelector('.sv');
             this.panorama = new google.maps.StreetViewPanorama( this.elem, {
                 pov: {
@@ -31,7 +31,7 @@
             bus.$on('placeSelected', this.render);
         },
         methods: {
-            render: function(place){
+            render(place){
                 this.sv.getPanorama({location: {lat: +place.latitude, lng: +place.longitude}}, function(data){
                     this.panorama.setPano(data.location.pano);
                     this.panorama.setVisible(true);

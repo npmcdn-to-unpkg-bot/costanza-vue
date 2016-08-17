@@ -5446,7 +5446,7 @@ fetch('public_washrooms.csv').then(function (parsed) {
         new Vue({
             el: '#app',
             data: function data() {
-                return { places: filteredPlaces.slice(0, 5) };
+                return { places: filteredPlaces.slice(0, 7) };
             },
             components: {
                 'costanza-places': _costanzaPlaces2.default,
