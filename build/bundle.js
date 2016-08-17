@@ -5357,6 +5357,10 @@ var _vue2 = _interopRequireDefault(_vue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * This is a dummy Vue instance used as a message bus
+ */
+
 var bus = new _vue2.default();
 exports.default = bus;
 
@@ -5371,12 +5375,16 @@ exports.filterPlaces = filterPlaces;
 exports.getDistanceFromLatLonInKm = getDistanceFromLatLonInKm;
 function geoLoc() {
     return new Promise(function (resolve, reject) {
-
+        /**
+         * If we've already resolved location, just cache it. Other modules need to know current lat/lon and they
+         * receive it from here
+         */
         if (geoLoc.prototype.cachedLocation) {
             return resolve(geoLoc.prototype.cachedLocation);
         } else if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function (data) {
                 if (data) {
+                    // Ca-ching
                     geoLoc.prototype.cachedLocation = data.coords;
                     return resolve(data.coords);
                 } else {
@@ -5390,19 +5398,7 @@ function geoLoc() {
 }
 
 function filterPlaces(places, currentLocation, opts) {
-    return places.map(function (place) {
-        place.dist = getDistanceFromLatLonInKm(+place.latitude, +place.longitude, currentLocation.latitude, currentLocation.longitude);
-        place.active = '';
-        return place;
-    }).filter(function (place) {
-        return place.dist <= opts.accuracy;
-    }).sort(function (place1, place2) {
-        if (place1.dist > place2.dist) {
-            return 1;
-        } else {
-            return -1;
-        }
-    });
+    return places.map(calculateDist.bind(null, currentLocation)).filter(placeFilter.bind(null, opts)).sort(placeSorter);
 }
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -5414,6 +5410,27 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     var d = R * c; // Distance in km
     return d / 1000;
 }
+
+/**
+ * Helper functions
+ */
+
+var calculateDist = function calculateDist(currentLocation, place) {
+    place.dist = getDistanceFromLatLonInKm(+place.latitude, +place.longitude, currentLocation.latitude, currentLocation.longitude);
+    return place;
+};
+
+var placeFilter = function placeFilter(opts, place) {
+    return place.dist <= opts.accuracy;
+};
+
+var placeSorter = function placeSorter(place1, place2) {
+    if (place1.dist > place2.dist) {
+        return 1;
+    } else {
+        return -1;
+    }
+};
 
 },{}],11:[function(require,module,exports){
 'use strict';
@@ -5436,6 +5453,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 document.querySelector('.welcome-message').classList.remove('hide');
 
+/**
+ * The following fetches the CSV file and filters places based on current location.
+ * It then, creates a new Vue instance and passes the filtered places to the components
+ */
 fetch('../data/public_washrooms.csv').then(function (parsed) {
     return parsed.text();
 }).then(function (data) {
@@ -5446,6 +5467,10 @@ fetch('../data/public_washrooms.csv').then(function (parsed) {
         document.querySelector('.welcome-message').classList.add('hide');
         new Vue({
             el: '#app',
+            /**
+             * Sets the filtered places as the data property on the root component.
+             * This is passed as props to the CostanzaPlaces component
+             */
             data: function data() {
                 return { places: filteredPlaces.slice(0, 7) };
             },

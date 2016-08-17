@@ -6,6 +6,10 @@ import {geoLoc, filterPlaces} from './helpers/geoLoc.js';
 
 document.querySelector('.welcome-message').classList.remove('hide');
 
+/**
+ * The following fetches the CSV file and filters places based on current location.
+ * It then, creates a new Vue instance and passes the filtered places to the components
+ */
 fetch('../data/public_washrooms.csv')
     .then(parsed => parsed.text())
     .then(data => {
@@ -17,6 +21,10 @@ fetch('../data/public_washrooms.csv')
                 document.querySelector('.welcome-message').classList.add('hide');
                 new Vue({
                     el: '#app',
+                    /**
+                     * Sets the filtered places as the data property on the root component.
+                     * This is passed as props to the CostanzaPlaces component
+                     */
                     data: function(){ return {places: filteredPlaces.slice(0, 7)}},
                     components: {
                         'costanza-places': CostanzaPlaces,
