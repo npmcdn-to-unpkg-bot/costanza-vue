@@ -1,3 +1,7 @@
+/**
+ * Returns a promise that resolves to the user's co-ordinates
+ * @returns {Promise}
+ */
 export function geoLoc(){
     return new Promise(function(resolve, reject){
         /**
@@ -22,7 +26,13 @@ export function geoLoc(){
     });
 }
 
-
+/**
+ * Returns a list of places that are within a distance from the user's current location
+ * @param places - A list of all places to filter from. A parsed version of the csv file
+ * @param currentLocation - The current co-ordinates of the user
+ * @param opts - An object containing options. Currently, the accuracy(distance in km) that is used to filter places
+ * @returns {Array}
+ */
 export function filterPlaces(places, currentLocation, opts){
     return places
         .map(calculateDist.bind(null, currentLocation))
@@ -30,17 +40,27 @@ export function filterPlaces(places, currentLocation, opts){
         .sort(placeSorter);
 }
 
-export function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = lat2-lat1;
-    var dLon = lon2-lon1;
-    var a =
+
+/**
+ * Uses the Haversine formula to calculate the great arc-distance between two points.
+ * Stolen from: http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+ * @param lat1
+ * @param lon1
+ * @param lat2
+ * @param lon2
+ * @returns {number - Arc distance between the two points in km}
+ */
+export function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    let R = 6371, // Radius of the earth in km
+        dLat = lat2-lat1,
+        dLon = lon2-lon1,
+        a =
             Math.sin(dLat/2) * Math.sin(dLat/2) +
             Math.cos(lat1) * Math.cos(lat2) *
-            Math.sin(dLon/2) * Math.sin(dLon/2)
-        ;
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    var d = R * c; // Distance in km
+            Math.sin(dLon/2) * Math.sin(dLon/2),
+        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)),
+        d = R * c; // Distance in km
+
     return d/1000;
 }
 
@@ -52,6 +72,7 @@ export function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
 let calculateDist = (currentLocation, place) => {
     place.dist = getDistanceFromLatLonInKm(+place.latitude, +place.longitude,
         currentLocation.latitude, currentLocation.longitude);
+
     return place;
 };
 
