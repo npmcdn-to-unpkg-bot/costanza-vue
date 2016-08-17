@@ -5488,7 +5488,7 @@ document.querySelector('.welcome-message').classList.remove('hide');
  * The following fetches the CSV file and filters places based on current location.
  * It then, creates a new Vue instance and passes the filtered places to the components
  */
-fetch('../data/public_washrooms.csv').then(function (parsed) {
+fetch('data/public_washrooms.csv').then(function (parsed) {
     return parsed.text();
 }).then(function (data) {
     var places = d3.csvParse(data),
