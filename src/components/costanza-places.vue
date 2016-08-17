@@ -1,16 +1,15 @@
 <template>
-    <ul>
+    <ul class="costanza-places">
         <costanza-place v-for="place in places" :place="place"></costanza-place>
     </ul>
 </template>
 
 
 <style>
-    ul{
+    .costanza-places {
         display: inline-flex;
         flex-direction: column;
     }
-
 </style>
 
 

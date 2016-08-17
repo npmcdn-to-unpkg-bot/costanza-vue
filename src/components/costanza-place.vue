@@ -17,7 +17,7 @@
     export default{
         props: ['place'],
         methods: {
-            selectPlace: function(event) {
+            selectPlace: function() {
                 bus.$emit('placeSelected', this.place);
             }
         }

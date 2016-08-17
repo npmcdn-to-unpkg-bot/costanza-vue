@@ -1,5 +1,5 @@
 <template>
-    <ol>
+    <ol class="costanza-directions">
         <li v-for="direction in directions" :direction="direction">
              <span v-html="direction.instructions"></span>
              <span v-html="direction.duration"></span>
@@ -10,7 +10,7 @@
 
 
 <style>
-    ol{
+    .costanza-directions {
         display: inline-flex;
         flex-direction: column;
     }
@@ -22,32 +22,37 @@
     import {geoLoc} from '../helpers/geoLoc.js';
 
     export default{
-        mounted: function(){
+        mounted() {
             this.directionsService = new google.maps.DirectionsService();
             this.currentLocation = geoLoc.prototype.cachedLocation;
             bus.$on('placeSelected', this.render);
         },
         data: function(){ return {place: 'select place', directions: []}},
-        methods: {
-            render: function(place){
-                this.place = place;
 
-                this.directionsService.route({
-                    origin: new google.maps.LatLng({lat: this.currentLocation.latitude, lng: this.currentLocation
-                            .longitude}),
-                    destination: new google.maps.LatLng({lat: +place.latitude, lng: +place.longitude}),
-                    travelMode: google.maps.TravelMode.WALKING
-                }, function(result, status){
+        methods: {
+            render(place) {
+                this.place = place;
+                this.directionsService.route(this.getFromConfig(), (result, status) => {
                     if(status === 'OK') {
-                        this.directions = [];
-                        result.routes[0].legs[0].steps.forEach(function(step) {
-                            this.directions.push({ instructions: step.instructions, duration: step.duration.text,
-                                distance: step.distance.text});
-                        }.bind(this));
+                        this.directions = this.formatDirections(result);
                     } else {
                        new Error("something went wrong")
                     }
-                }.bind(this));
+                });
+            },
+            getFromConfig() {
+                return {
+                    origin: new google.maps.LatLng({lat: this.currentLocation.latitude, lng: this.currentLocation.longitude}),
+                    destination: new google.maps.LatLng({lat: +this.place.latitude, lng: +this.place.longitude}),
+                    travelMode: google.maps.TravelMode.WALKING
+                }
+            },
+
+            formatDirections(unformatted) {
+                return unformatted.routes[0].legs[0].steps.map((step) => {
+                            return { instructions: step.instructions, duration: step.duration.text,
+                                distance: step.distance.text};
+                });
             }
         }
     }

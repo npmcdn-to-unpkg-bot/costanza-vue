@@ -5148,7 +5148,7 @@ exports.insert = function (css) {
 
 },{}],5:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\nol{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.costanza-directions {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -5169,39 +5169,47 @@ exports.default = {
         this.currentLocation = _geoLoc.geoLoc.prototype.cachedLocation;
         _events2.default.$on('placeSelected', this.render);
     },
+
     data: function data() {
         return { place: 'select place', directions: [] };
     },
+
     methods: {
         render: function render(place) {
-            this.place = place;
+            var _this = this;
 
-            this.directionsService.route({
-                origin: new google.maps.LatLng({ lat: this.currentLocation.latitude, lng: this.currentLocation.longitude }),
-                destination: new google.maps.LatLng({ lat: +place.latitude, lng: +place.longitude }),
-                travelMode: google.maps.TravelMode.WALKING
-            }, function (result, status) {
+            this.place = place;
+            this.directionsService.route(this.getFromConfig(), function (result, status) {
                 if (status === 'OK') {
-                    this.directions = [];
-                    result.routes[0].legs[0].steps.forEach(function (step) {
-                        this.directions.push({ instructions: step.instructions, duration: step.duration.text,
-                            distance: step.distance.text });
-                    }.bind(this));
+                    _this.directions = _this.formatDirections(result);
                 } else {
                     new Error("something went wrong");
                 }
-            }.bind(this));
+            });
+        },
+        getFromConfig: function getFromConfig() {
+            return {
+                origin: new google.maps.LatLng({ lat: this.currentLocation.latitude, lng: this.currentLocation.longitude }),
+                destination: new google.maps.LatLng({ lat: +this.place.latitude, lng: +this.place.longitude }),
+                travelMode: google.maps.TravelMode.WALKING
+            };
+        },
+        formatDirections: function formatDirections(unformatted) {
+            return unformatted.routes[0].legs[0].steps.map(function (step) {
+                return { instructions: step.instructions, duration: step.duration.text,
+                    distance: step.distance.text };
+            });
         }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<ol>\n    <li v-for=\"direction in directions\" :direction=\"direction\">\n         <span v-html=\"direction.instructions\"></span>\n         <span v-html=\"direction.duration\"></span>\n         <span v-html=\"direction.distance\"></span>\n    </li>\n</ol>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<ol class=\"costanza-directions\">\n    <li v-for=\"direction in directions\" :direction=\"direction\">\n         <span v-html=\"direction.instructions\"></span>\n         <span v-html=\"direction.duration\"></span>\n         <span v-html=\"direction.distance\"></span>\n    </li>\n</ol>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\nol{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n"] = false
+    __vueify_insert__.cache["\n.costanza-directions {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -5228,7 +5236,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = {
     props: ['place'],
     methods: {
-        selectPlace: function selectPlace(event) {
+        selectPlace: function selectPlace() {
             _events2.default.$emit('placeSelected', this.place);
         }
     }
@@ -5251,7 +5259,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"../helpers/events.js":9,"vue":3,"vue-hot-reload-api":2,"vueify/lib/insert-css":4}],7:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\nul{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.costanza-places {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -5271,13 +5279,13 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<ul>\n    <costanza-place v-for=\"place in places\" :place=\"place\"></costanza-place>\n</ul>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<ul class=\"costanza-places\">\n    <costanza-place v-for=\"place in places\" :place=\"place\"></costanza-place>\n</ul>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\nul{\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n\n"] = false
+    __vueify_insert__.cache["\n.costanza-places {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
