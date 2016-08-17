@@ -1,12 +1,12 @@
-import CostanzaPlaces from './costanza-places.vue';
-import CostanzaStreetView from './costanza-street-view.vue';
-import CostanzaDirections from './costanza-directions.vue';
+import CostanzaPlaces from './components/costanza-places.vue';
+import CostanzaStreetView from './components/costanza-street-view.vue';
+import CostanzaDirections from './components/costanza-directions.vue';
 import {geoLoc, filterPlaces} from './helpers/geoLoc.js';
 
 
 document.querySelector('.welcome-message').classList.remove('hide');
 
-fetch('./data/public_washrooms.csv')
+fetch('../data/public_washrooms.csv')
     .then(parsed => parsed.text())
     .then(data => {
         let places = d3.csvParse(data),
